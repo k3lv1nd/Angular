@@ -4,35 +4,63 @@
 	<title></title>
 	<script src="angular.min.js"></script>
 </head>
-<body ng-app="myApp">
-<div ng-controller="test">
-<form name="registration">
-	<br>
-	<div style="text-align: center;">
-		<h3>Enter Mobile number :</h3>
-		<input type="number" 
-		name="number"
-		ng-model="mobNo" 
-		required ng-minlength="10"
-		 ng-maxlength="10" 
-		 ng-init="number_error_show =0" 
-		 ng-focus=" number_error_show =1" 
-		 ng-change="number_error_show= number_error_show + 1;"
-		style="font-size:35px;">
-		<h2>
-			<p style="color:#ff000;" 
-			ng-show="number_error_show>0 &&registration.number.$error.required || registration.number.$error.number">Please enter a valid mobile number</p>
-			<p style="color: #ff000;" 
-			ng-show="number_error_show >0 && ((registration.number.$error.minlength || registration.number.$error.maxlength) && registration.number.$dirty)" >mobile number should be 10 digits</p>
-		</h2>
+<!-- bootstrapping -->
+<body ng-app="myApp" style="align-content: centre;">
+<div ng-controller="registration">
+<h3>Members Registration</h3>
+<form >
+<label>first-name:</label>
+<input type="text" name="firstname"  ng-model="member.firstname">
+<label>Surname</label>
+<input type="text" name="surname" ng-model="member.surname">
+<label>Age</label>
+<input type="number" name="Age" ng-model="member.age">
+<input ng-click="register()" type="submit" name="submit">
+	</form>
+	<hr>
+	<h3>
+		Registered members
+	</h3>
+	<table border="1">
 
-	</div>
-</form>
+		<tr>
+			<td>Firstname</td><td>Surname</td><td>Age</td>
+		</tr>
+		<tr>
+			<td>
+				{{member.firstname|uppercase}}
+			</td>
+			<td>
+				{{member.surname}}
+			</td>
+			<td>
+				{{member.age|filterAge}}
+			</td>
+		</tr>
+	</table>
+
 </div>
+<script type="text/javascript">
+	let v = angular.module('myApp', []);
 
-<script type="text/JavaScript">
-	var app = angular.module('myApp',[]);
-	app.controller("test",function($scope){ });
+    v.controller('registration', function($scope) {
+ 
+        $scope.member = {
+             firstname: '',
+             surname: '',
+             age:10
+        };
+ 
+        $scope.register = function() {
+           console.log('User clicked register', $scope.member.firstname);
+        };
+    });
+
+    v.filter('filterAge',()=>{
+    	return function(age){ return (parseInt(age)+'yrs')};
+    });
+    
+
 </script>
 </body>
 </html>
